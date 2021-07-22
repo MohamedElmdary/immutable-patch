@@ -1,0 +1,10 @@
+{
+  "name": "immutable-patch",
+  "version": "1.0.0",
+  "description": "Immutable-patch inspired by @ngxs/store/operators written in typescript. Immutable-patch can help you patch your state and get a new state without write much code and without change the old one which avoid issue and reduce code with some libs like Redux.",
+  "main": "index.ts",
+  "repository": "https://github.com/MohamedElmdary/immutable-patch",
+  "author": "MohamedElmdary",
+  "license": "MIT",
+  "private": false
+}
