@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "CommonJS",
+        "lib": ["es2015"],
+        "checkJs": true,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        "rootDir": "./",
+        "removeComments": true,
+        "noEmit": false,
+        "downlevelIteration": true,
+        "isolatedModules": false,
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": false
+    }
+}
