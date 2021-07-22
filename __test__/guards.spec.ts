@@ -1,4 +1,4 @@
-import { isArray, isObject } from "../src"
+import { isArray, isObject, isFunction } from "../src"
 
 describe("Guards", () => {
     describe("Check Array Guard", () => {
@@ -42,6 +42,30 @@ describe("Guards", () => {
             expect(isObject(new WeakMap())).toBe(false)
             expect(isObject(new WeakSet())).toBe(false)
             expect(isObject(null)).toBe(false)
+        })
+    })
+
+    describe("Check Function Guard", () => {
+        it("Should return true.", () => {
+            expect(isFunction(function () {})).toBe(true)
+            expect(isFunction(() => {})).toBe(true)
+        })
+
+        it("Should return false", () => {
+            expect(isFunction({})).toBe(false)
+            expect(isFunction(Object.create({}))).toBe(false)
+            expect(isFunction(Object.create(null))).toBe(false)
+            expect(isFunction([])).toBe(false)
+            expect(isFunction(new Array())).toBe(false)
+            expect(isFunction(Object.create([]))).toBe(false)
+            expect(isFunction("string")).toBe(false)
+            expect(isFunction(0)).toBe(false)
+            expect(isFunction(false)).toBe(false)
+            expect(isFunction(new Map())).toBe(false)
+            expect(isFunction(new Set())).toBe(false)
+            expect(isFunction(new WeakMap())).toBe(false)
+            expect(isFunction(new WeakSet())).toBe(false)
+            expect(isFunction(null)).toBe(false)
         })
     })
 })
