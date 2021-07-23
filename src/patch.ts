@@ -3,11 +3,7 @@ import { Operator } from "./types"
 import { copy } from "./utils"
 
 export type Patcher<T> = {
-    [R in keyof T]: T[R] extends object
-        ? T[R] extends Array<any>
-            ? unknown
-            : Patcher<T[R]>
-        : T[R] | Operator<T[R]>
+    [R in keyof T]: T[R] | Operator<T[R]>
 }
 
 export function patch<T>(patchers: Patcher<Partial<T>>): Operator<T> {
