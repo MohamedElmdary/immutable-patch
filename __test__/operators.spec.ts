@@ -1,19 +1,19 @@
-import { append, updateItem, patch } from "../src"
+import { append, updateItem, patch, ifElse } from "../src"
+
+interface TodoModel {
+    id: number
+    body: string
+    done: boolean
+}
+
+interface UserModel {
+    id: string
+    name: string
+    todo: TodoModel
+}
 
 describe("Operators", () => {
     describe("Patch", () => {
-        interface TodoModel {
-            id: number
-            body: string
-            done: boolean
-        }
-
-        interface UserModel {
-            id: string
-            name: string
-            todo: TodoModel
-        }
-
         it("Should return new object", () => {
             const state: UserModel = {
                 id: "Awesome ID",
@@ -108,6 +108,69 @@ describe("Operators", () => {
             expect(state[5] !== newState[5]).toBe(true)
             expect(state[5].name).toEqual("Test 5")
             expect(newState[5].name).toEqual("Khaled")
+        })
+    })
+
+    describe("test all operators", () => {
+        it('should work  :"(', () => {
+            interface State {
+                user: UserModel
+                todos: TodoModel[]
+            }
+
+            const state: State = {
+                user: {
+                    id: "0",
+                    name: "Ahmed",
+                    todo: {
+                        id: 0,
+                        body: "body",
+                        done: false,
+                    },
+                },
+                todos: [
+                    { id: 0, body: "body 0", done: true },
+                    { id: 1, body: "body 1", done: false },
+                ],
+            }
+
+            const state2 = patch<State>({
+                user: patch<UserModel>({
+                    todo: patch<TodoModel>({
+                        done(value) {
+                            return !value
+                        },
+                    }),
+                }),
+                todos: ifElse<TodoModel[]>(
+                    true,
+                    updateItem<TodoModel>(
+                        0,
+                        patch<TodoModel>({
+                            body(value) {
+                                return "new value " + value
+                            },
+                        })
+                    ),
+                    append<TodoModel>([])
+                ),
+            })(state)
+
+            expect(state2).toMatchObject({
+                user: {
+                    id: "0",
+                    name: "Ahmed",
+                    todo: {
+                        id: 0,
+                        body: "body",
+                        done: true,
+                    },
+                },
+                todos: [
+                    { id: 0, body: "new value body 0", done: true },
+                    { id: 1, body: "body 1", done: false },
+                ],
+            } as State)
         })
     })
 })
