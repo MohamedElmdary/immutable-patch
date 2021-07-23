@@ -1,4 +1,4 @@
-import { append, Operator, patch } from "../src"
+import { append, updateItem, patch } from "../src"
 
 describe("Operators", () => {
     describe("Patch", () => {
@@ -85,6 +85,29 @@ describe("Operators", () => {
             expect(newState.nums.length).toBe(4)
             expect(newState.nums[0]).toEqual(0)
             expect(newState.nums[newState.nums.length - 1]).toEqual(8)
+        })
+    })
+
+    describe("UpdateItem", () => {
+        it("Should update the item.", () => {
+            type User = { id: number; name: string }
+            const state: User[] = Array.from({ length: 10 }, (_, id) => {
+                return { id, name: `Test ${id}` }
+            })
+
+            const newState = updateItem<User>(
+                (users) => users.findIndex((u) => u.id === 5),
+                patch<User>({
+                    name: "Khaled",
+                })
+            )(state)
+
+            expect(state !== newState).toBe(true)
+            expect(state.length).toEqual(newState.length)
+            expect(state[0]).toBe(newState[0])
+            expect(state[5] !== newState[5]).toBe(true)
+            expect(state[5].name).toEqual("Test 5")
+            expect(newState[5].name).toEqual("Khaled")
         })
     })
 })
